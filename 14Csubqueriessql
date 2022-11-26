@@ -1,0 +1,100 @@
+/*Look through Lesson 14b Basic Subqueries.sql and run the code examples there, then
+   practice Subqueries with the excercises below:
+*/
+
+/* 1) Write a query that prompts the user for an employee last name, and then 
+      displays the last name, hire date, and department id for any employee in the same
+      department, excluding the given employee.
+      */
+      SELECT last_name, hire_date, department_id
+      FROM employees
+      WHERE department_id IN (select department_id from employees 
+                              Where last_name = '&lname');
+      
+      
+/* 2) Create a report that displays employee number, last name, and salary for
+      all employees who earn more than the average salary. Sort the results
+      by salary. */
+      SELECT employee_id, last_name, salary
+      FROM employees
+      WHERE salary > (select AVG(salary) from employees)
+      ORDER BY salary;
+
+
+/* 3) Show the employee number, first and last names, salary, and department id,
+      of anybody whose salary is below the company average, and who works in a 
+      department with a department name that ends with s. Sort the result
+      by department id and employee id. */
+      SELECT e.first_name, e.last_name, e.salary, e.deartment_id
+      FROM employees 
+      WHERE salary IN (SELECT AVG(salary) from employees) 
+            AND  department_name IN (SELECT department_name from departments
+                                    WHERE department_name LIKE '%s');
+      
+/* 4) Display the id, first name, last name, and department id of all employees 
+      working in Seattle. Use subqueries rather than joins to acheive the results.*/
+      select e.employee_id, e.first_name, e.last_name, e.department_id
+      FROM employees e JOIN departments d
+        ON e.department_id = d.department_id
+        JOIN locations l
+        ON d.location_id = l.location_id
+        Where city = 'Seattle';
+    
+/* 5) Modify your previous answer to prompt the user to enter a city. Why might 
+      some cities result in no rows of output? */ 
+      SELECT last_name, job_id, department_name, city
+        FROM employees JOIN departments
+        ON employees.department_id = departments.department_id
+        JOIN locations
+        ON departments.location_id = locations.location_id
+        Where city = '&city';
+
+/* 6) Recreate the result of question 4, but use joins to acheive your results.*/ 
+        SELECT last_name, job_id, department_name, city
+        FROM employees JOIN departments
+        ON employees.department_id = departments.department_id
+        JOIN locations
+        ON departments.location_id = locations.location_id
+        Where city = 'Seattle';
+      
+/* 7) Create a report showing the last name, job id, salary, and manager_id of every
+      employee who reports to the manager whose job is AD_PRES. */
+      SELECT last_name, job_id, salary, manager_id
+      FROM employees
+      Where manager_id IN (SELECT manager_id FROM employees
+                          WHERE job_id = 'PU_CLERK');
+      
+/* 8) Display the employee number, last name, job, salary, and department id of all employees
+      that work in the Executive department. Do not use a join to create your
+      output.*/
+      SELECT employee_id, last_name, job_id, salary, department_id
+      FROM employees
+      WHERE department_id = (select department_id 
+                             from departments 
+                             WHERE department_name = 'Executive');
+		 
+		 
+		 
+  
+/* 9) Show last_name, salary, and department id for employees who earn more than any 
+      employee in department 60, but who do not work in department 60.*/
+      SELECT last_name, salary, department_id 
+      FROM employees
+      WHERE salary > ANY ( SELECT salary 
+                           from employees 
+                           where department_id = 60)
+      AND department_id != 60;
+         
+    
+/* 10)  From the sales table, show every customer id, and the total amount sold
+        to the customer. Name the second column sales_total. Include only customers 
+        whose email ends in .co or .com. Sort the result by customer id.  
+        Use a subquery for your solution. */
+        SELECT sales_cust_id, sales_amt AS salesTotal
+        FROM sales
+        WHERE sales_cust_id IN (SELECT cust_id from customers
+                                 where cust_email LIKE '%.co' OR cust_email LIKE '%.com')
+        ORDER BY sales_cust_id;         
+            
+                
+                    

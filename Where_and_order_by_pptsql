@@ -1,0 +1,48 @@
+select last_name, job_id, department_id AS dptid
+    FROM employees
+        WHERE department_id = 90;
+        
+SELECT last_name, job_id 
+    FROM employees
+        WHERE last_name = 'whalen';
+
+SELECT first_name, salary
+    FROM employees
+        WHERE salary <= 2500;
+        
+SELECT last_name, salary
+    FROM employees
+        WHERE salary BETWEEN 2000 AND 3000;
+    
+SELECT first_name, last_name, job_id
+    FROM employees
+        WHERE first_name LIKE '%l';
+    
+SELECT first_name, last_name, job_id, salary
+    FROM employees
+        WHERE salary <= 10000
+        AND first_name LIKE 'S%';
+        
+-- orderby exercises
+SELECT first_name, last_name, job_id, hire_date
+    FROM employees
+        --WHERE first_name = '%MAN'
+        ORDER BY hire_date;
+        
+SELECT first_name, last_name
+    FROM employees
+    WHERE first_name IN ('Nandita', 'Smith')
+    ORDER BY last_name DESC;
+    
+SELECT first_name, last_name, job_id, employee_id
+    FROM employees
+    WHERE employee_id = &empid; 
+    
+SELECT first_name, last_name, &&empid
+    FROM employees
+    ORDER BY &empid DESC;
+    
+SELECT first_name, last_name, &&sal
+    FROM employees
+    ORDER BY &sal;
+

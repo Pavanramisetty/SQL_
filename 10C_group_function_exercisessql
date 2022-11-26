@@ -1,0 +1,50 @@
+/* 1) Find the highest, lowest, sum, and average salary of all employees. 
+      Label the columns Maximum, Minimum, Sum, and Average. Round any result
+      two places past the decimal, if needed. */
+      SELECT MAX(salary) AS MAXIMUM, MIN(salary) AS MINIMUM, sum(salary) AS SUM, round(AVG(salary), 2) as AVERAGE
+          FROM employees;
+
+
+-- 2) Modify query 1 to display the aggregated data for each job type.
+      SELECT job_id, round(MAX(salary), 2) AS MAXIMUM, round(MIN(salary), 2) AS MINIMUM, round(sum(salary), 2) AS SUM, round(AVG(salary), 2) as AVERAGE
+          FROM employees group by job_id;
+
+
+-- 3) Write a query that counts the number of people in each job type. 
+      select job_id, count(employee_id) AS PEOPLE_FROM_JOB_TYPE 
+          FROM employees group by job_id;
+
+
+-- 4) Generalize query 3 so the user is prompted to enter a job title.
+      select job_id, count(employee_id) AS PEOPLE_FROM_JOB_TYPE 
+          FROM employees 
+          group by job_id
+          having job_id = '&job_id';
+
+
+/* 5) Display the number of distinct managers. Label the column
+      Number of Managers. */ 
+SELECT COUNT(DISTINCT manager_id) AS Managers
+      from employees;
+      
+      
+      
+/* 6) Find the difference between the highest and lowest salary. Label the 
+      column Difference. */
+      SELECT (MAX(salary) - MIN(salary)) AS DIFFERENCE 
+      FROM employees;
+      
+      
+      
+/* 7) Display the manager number and the salary of the lowest paid employee
+      for each manager. Exclude anyone whose manager is unknown. Exclude any 
+      group in which the minimum salary is $6000 or less. Sort the output in 
+      descending order of lowest salary. */ 
+      SELECT manager_id, min(salary) AS minimum_salary
+          from employees
+          where manager_id IS NOT NULL
+          having min(salary) < 6000
+          group by manager_id
+          ORDER BY min(salary) DESC;
+
+        
